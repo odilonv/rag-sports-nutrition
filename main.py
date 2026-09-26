@@ -66,7 +66,16 @@ def setup_rag():
     # Generation
     print("\n--- Generation Phase (LLM) ---")
 
-    llm = ChatOpenAI(model='gpt-4o')
+    llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
+
+
+    rewrite_prompt = ChatPromptTemplate.from_template(
+        "Rewrite the following user question into a precise, standalone search query for a sports nutrition database.\n"
+        "Just output the rewritten query, nothing else.\n"
+        "Question: {question}"
+    )
+    query_rewriter = rewrite_prompt | llm | StrOutputParser()
+
     template = """You are an expert sports nutritionist. Answer the question based ONLY on the following context:
     {context}
     
@@ -79,27 +88,34 @@ def setup_rag():
         return "\n\n".join(doc.page_content for doc in docs)
 
     rag_chain = (
-        {"context": retriever | format_docs, "question": RunnablePassthrough()}
+        {"context": query_rewriter | retriever | format_docs, "question": RunnablePassthrough()}
         | prompt
         | llm
         | StrOutputParser()
     )
 
-    return retriever, rag_chain
+    return retriever, rag_chain, query_rewriter
 
-def ask_question(query, retriever, rag_chain):
-    retrieved_docs = retriever.invoke(query)
-    context_str = "\n\n".join(doc.page_content for doc in retrieved_docs)
+def ask_question(query: str, retriever, rag_chain, query_rewriter):
+    better_query = query_rewriter.invoke({"question": query})
+    print(f"\nBase : '{query}'")
+    print(f"Rewritten  : '{better_query}'")
 
+    context_docs = retriever.invoke(better_query)
+    context = "\n".join([doc.page_content for doc in context_docs])
+    
     answer = rag_chain.invoke(query)
+    
+    return answer, context
 
-    return answer, context_str
 
 
 if __name__ == "__main__":
-    retriever, rag_chain = setup_rag()
+    retriever, rag_chain, query_rewriter = setup_rag()
 
     query= "What is the recommended protein intake for post-workout recovery?"
-    answer, context = ask_question(query, retriever, rag_chain)
+    bad_query = "And what about water?"
+
+    answer, context = ask_question(bad_query, retriever, rag_chain, query_rewriter)
 
     print(f"\nRAG Response: \n{answer}\n")
