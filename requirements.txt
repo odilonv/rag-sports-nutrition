@@ -11,3 +11,4 @@ deepeval
 python-dotenv
 pypdf
 tiktoken
+langchain-experimental
