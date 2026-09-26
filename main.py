@@ -1,3 +1,4 @@
+from langchain_community import document_loaders
 import os
 from dotenv import load_dotenv
 from langchain_community.document_loaders import TextLoader
@@ -29,15 +30,17 @@ def main():
 
     # 3. Basic chunking (RecursiveCharacterTextSplitter)
     # In v2 we will switch to Semantic Chunking
-    text_splitter = RecursiveCharacterTextSplitter(
+    text_splitter_old = RecursiveCharacterTextSplitter(
         chunk_size=500,
         chunk_overlap=50
     )
+
+     # 4. Create Chunking, Embeddings and Vector Database
+    embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
+    text_splitter = SemanticChunker(embeddings)
     chunks = text_splitter.split_documents(docs)
     print(f"Number of chunks generated: {len(chunks)}")
 
-    # 4. Create Embeddings and Vector Database
-    embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
     
     # In-memory ChromaDB for simplicity
     vectorstore = Chroma.from_documents(
