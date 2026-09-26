@@ -1,3 +1,4 @@
+from langchain_community import retrievers
 from langchain_community import document_loaders
 import os
 from dotenv import load_dotenv
@@ -9,7 +10,8 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnablePassthrough
 from langchain_core.output_parsers import StrOutputParser
 from langchain_experimental.text_splitter import SemanticChunker
-
+from langchain_community.retrievers import BM25Retriever
+from langchain_classic.retrievers import EnsembleRetriever
 
 
 
@@ -43,8 +45,15 @@ def setup_rag():
     )
 
     # Search Engine (Retriever)
-    retriever = vectorstore.as_retriever(search_kwargs={"k": 2})
+    vector_retriever = vectorstore.as_retriever(search_kwargs={"k": 2})
 
+    bm25_retriever = BM25Retriever.from_documents(chunks)
+    bm25_retriever.k = 2
+
+    retriever = EnsembleRetriever(
+        retrievers=[bm25_retriever, vector_retriever],
+        weights=[0.5, 0.5]
+    )
     # Generation
     print("\n--- Generation Phase (LLM) ---")
 

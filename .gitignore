@@ -10,6 +10,9 @@ __pycache__/
 *$py.class
 *.so
 
+# DeepEval cache
+.deepeval/
+
 # Environment files (API Keys security)
 .env
 .env.*
