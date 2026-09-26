@@ -1,0 +1,30 @@
+## Sports Nutrition Guidelines: Fueling for Performance and Recovery
+
+### 1. Macronutrient Fundamentals
+Athletes require a specific balance of macronutrients to support energy expenditure and muscle repair.
+- **Carbohydrates (CHO):** The primary fuel source for high-intensity exercise. Daily intake should range from 3-5 g/kg for light training to 8-12 g/kg for extreme endurance events.
+- **Protein (PRO):** Essential for muscle protein synthesis (MPS) and recovery. Athletes should aim for 1.4-2.0 g/kg of body weight daily. The distribution is crucial: 20-40g per meal every 3-4 hours is optimal for maximizing MPS.
+- **Fats:** Important for hormone production and sustained energy in low-intensity exercise. Should comprise 20-35% of total daily energy intake.
+
+### 2. Pre-Workout Nutrition (Fueling)
+The goal is to maximize glycogen stores and ensure adequate hydration without gastrointestinal distress.
+- **3-4 hours before:** A complete meal containing 1-4 g/kg of complex carbohydrates and a moderate amount of protein.
+- **30-60 minutes before:** A small, easily digestible carbohydrate snack (e.g., banana, energy gel) containing 30-60g of CHO. Avoid high-fiber and high-fat foods.
+
+### 3. Intra-Workout Nutrition (During Exercise)
+For exercise lasting less than 60 minutes, water is generally sufficient.
+For endurance events exceeding 60-90 minutes:
+- Aim for 30-60g of CHO per hour.
+- For events over 2.5 hours, up to 90g of CHO per hour (using multiple transportable carbohydrates like glucose-fructose mixtures) can improve performance.
+- Isotonic sports drinks are recommended to replace both fluids and electrolytes (especially sodium).
+
+### 4. Post-Workout Nutrition (Recovery)
+The "3 Rs" of recovery: Refuel, Rebuild, and Rehydrate.
+- **Refuel:** Consume 1.0-1.2 g/kg of carbohydrates within the first hour post-exercise to rapidly replenish glycogen stores, especially if the next training session is within 24 hours.
+- **Rebuild:** Consume 20-40g of high-quality protein (rich in leucine, e.g., whey protein) alongside carbohydrates to stimulate muscle repair.
+- **Rehydrate:** Drink 1.25-1.5 liters of fluid for every kilogram of body weight lost during exercise.
+
+### 5. Hydration and Electrolytes
+Dehydration >2% of body weight significantly impairs cognitive and physical performance.
+- Baseline hydration: Drink 5-10 ml/kg of body weight 2-4 hours before exercise.
+- Sodium is the primary electrolyte lost in sweat (average 1g/L). Salty sweaters or those exercising in heat should proactively replace sodium to prevent hyponatremia.
