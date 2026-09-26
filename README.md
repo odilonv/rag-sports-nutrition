@@ -1,4 +1,4 @@
-# AI Sports Nutritionist (Advanced RAG Pipeline)
+﻿# AI Sports Nutritionist (Advanced RAG Pipeline)
 
 **Author:** Odilon VIDAL
 
@@ -10,7 +10,7 @@ This project is an advanced Retrieval-Augmented Generation (RAG) system speciali
 
 The pipeline is built with a highly optimized, enterprise-grade architecture:
 
-`	ext
+```text
 User Query
     |
     v
@@ -25,7 +25,7 @@ User Query
     |
     v
 [ gpt-4o-mini (LLM) ]  <- Generates the final grounded answer
-`
+```
 
 ## Key Components
 
@@ -45,14 +45,14 @@ User Query
 
 The system is rigorously tested using two strategies:
 
-### 1. Custom LLM-as-a-Judge (evaluate.py)
+### 1. Custom LLM-as-a-Judge (`evaluate.py`)
 
-A hand-crafted evaluator using gpt-4o-mini as judge:
+A hand-crafted evaluator using `gpt-4o-mini` as judge:
 
 - **Faithfulness** - Does the answer stay within the retrieved context? (no hallucination)
 - **Answer Relevancy** - Does the answer directly address the user question?
 
-### 2. DeepEval Framework ( est_deepeval.py)
+### 2. DeepEval Framework (`test_deepeval.py`)
 
 A professional testing suite (the PyTest for AI), with calibrated metrics and rich terminal reporting.
 
@@ -60,54 +60,51 @@ A professional testing suite (the PyTest for AI), with calibrated metrics and ri
 
 ## Project Structure
 
-`	ext
+```text
 rag-sports-nutrition/
 |-- data/
-|   -- sports_nutrition_guidelines.txt  # Source knowledge base
+|   `-- sports_nutrition_guidelines.txt  # Source knowledge base
 |-- app.py              # Streamlit chat interface
 |-- main.py             # RAG pipeline (setup_rag + ask_question)
 |-- evaluate.py         # Custom LLM-as-a-judge evaluator
 |-- test_deepeval.py    # DeepEval automated test suite
 |-- requirements.txt
 |-- .env                # API keys (not committed to Git)
--- .gitignore
-`
+`-- .gitignore
+```
 
 ## How to Run
 
 ### 1. Install dependencies
 
-`bash
+```bash
 pip install -r requirements.txt
-`
+```
 
 ### 2. Set up environment variables
 
-Create a .env file at the root of the project:
+Create a `.env` file at the root of the project:
 
-`env
+```env
 OPENAI_API_KEY=your_openai_key_here
 COHERE_API_KEY=your_cohere_key_here
-`
+```
 
 ### 3. Launch the Streamlit chat interface
 
-`bash
+```bash
 streamlit run app.py
-`
+```
 
 ### 4. Run automated evaluation tests
 
-`bash
-
+```bash
 # Custom evaluator
-
 python evaluate.py
 
 # DeepEval framework
-
 deepeval test run test_deepeval.py
-`
+```
 
 ## Tech Stack
 
