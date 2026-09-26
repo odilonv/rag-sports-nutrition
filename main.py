@@ -12,8 +12,8 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_experimental.text_splitter import SemanticChunker
 from langchain_community.retrievers import BM25Retriever
 from langchain_classic.retrievers import EnsembleRetriever
-
-
+from langchain_classic.retrievers.contextual_compression import ContextualCompressionRetriever
+from langchain_cohere import CohereRerank
 
 # Load environment variables (OpenAI API Key)
 load_dotenv()
@@ -45,15 +45,24 @@ def setup_rag():
     )
 
     # Search Engine (Retriever)
-    vector_retriever = vectorstore.as_retriever(search_kwargs={"k": 2})
+    vector_retriever = vectorstore.as_retriever(search_kwargs={"k": 10})
 
     bm25_retriever = BM25Retriever.from_documents(chunks)
-    bm25_retriever.k = 2
+    bm25_retriever.k = 10
 
-    retriever = EnsembleRetriever(
+    base_retriever = EnsembleRetriever(
         retrievers=[bm25_retriever, vector_retriever],
         weights=[0.5, 0.5]
     )
+
+    compressor = CohereRerank(top_n=2, model="rerank-english-v3.0")
+
+
+    retriever = ContextualCompressionRetriever(
+        base_compressor=compressor,
+        base_retriever=base_retriever
+    )
+
     # Generation
     print("\n--- Generation Phase (LLM) ---")
 
