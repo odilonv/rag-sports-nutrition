@@ -13,29 +13,22 @@ from langchain_experimental.text_splitter import SemanticChunker
 
 
 
-# 1. Load environment variables (OpenAI API Key)
+# Load environment variables (OpenAI API Key)
 load_dotenv()
 
-def main():
+def setup_rag():
     print("--- Starting Ingestion (Basic RAG) ---")
     
     if not os.getenv("OPENAI_API_KEY") or os.getenv("OPENAI_API_KEY") == "your_openai_api_key_here":
         print("Error: Please add your OPENAI_API_KEY to the .env file")
         return
 
-    # 2. Load the sports nutrition document
+    # Load the sports nutrition document
     loader = TextLoader("data/sports_nutrition_guidelines.txt", encoding="utf-8")
     docs = loader.load()
     print(f"Document loaded: {len(docs)} page(s).")
 
-    # 3. Basic chunking (RecursiveCharacterTextSplitter)
-    # In v2 we will switch to Semantic Chunking
-    text_splitter_old = RecursiveCharacterTextSplitter(
-        chunk_size=500,
-        chunk_overlap=50
-    )
-
-     # 4. Create Chunking, Embeddings and Vector Database
+     # Create Chunking, Embeddings and Vector Database
     embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
     text_splitter = SemanticChunker(embeddings)
     chunks = text_splitter.split_documents(docs)
@@ -49,15 +42,10 @@ def main():
         collection_name="sports_nutrition_data"
     )
 
-    # 5. Search Engine (Retriever)
+    # Search Engine (Retriever)
     retriever = vectorstore.as_retriever(search_kwargs={"k": 2})
 
-    # 6. Test a simple query
-    query = "What is the recommended protein intake for post-workout recovery?"
-    print(f"\nQuery: {query}")
-
-
-    # 7. Generation
+    # Generation
     print("\n--- Generation Phase (LLM) ---")
 
     llm = ChatOpenAI(model='gpt-4o')
@@ -79,17 +67,21 @@ def main():
         | StrOutputParser()
     )
 
+    return retriever, rag_chain
+
+def ask_question(query, retriever, rag_chain):
+    retrieved_docs = retriever.invoke(query)
+    context_str = "\n\n".join(doc.page_content for doc in retrieved_docs)
+
     answer = rag_chain.invoke(query)
 
-    print(f"\nAI Response: \n{answer}\n")
+    return answer, context_str
 
-
-    # results = retriever.invoke(query)
-    # print("\nResults retrieved:")
-    # for i, res in enumerate(results):
-    #     print(f"--- Result {i+1} ---")
-    #     print(res.page_content)
-    #     print("--------------------")
 
 if __name__ == "__main__":
-    main()
+    retriever, rag_chain = setup_rag()
+
+    query= "What is the recommended protein intake for post-workout recovery?"
+    answer, context = ask_question(query, retriever, rag_chain)
+
+    print(f"\nRAG Response: \n{answer}\n")
